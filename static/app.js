@@ -6,7 +6,7 @@ const state = {
   menuOpen: false,
 };
 
-const categories = ["All", "Dresses", "Tops", "Bottoms", "Sets", "Outerwear", "Shoes"];
+const categories = ["All", "Dresses", "Tops", "Bottoms", "Sets", "Lingerie", "Outerwear"];
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -93,8 +93,8 @@ function renderProducts() {
   grid.innerHTML = items
     .map(
       (p) => `
-    <article class="product" data-reveal>
-      <div class="product-media" data-tilt>
+    <article class="product${p.packshot ? " is-packshot-card" : ""}" data-reveal>
+      <div class="product-media${p.packshot ? " is-packshot" : ""}${p.id === "savage-sweats" ? " is-bow" : ""}" data-tilt>
         ${p.tag ? `<span class="product-tag">${p.tag}</span>` : ""}
         <img src="${p.image}" alt="${p.name}" loading="lazy" />
         ${
@@ -238,6 +238,7 @@ function wireMagnetic() {
 function wireTilt(nodes) {
   if (window.matchMedia("(hover: none), (pointer: coarse)").matches) return;
   nodes.forEach((el) => {
+    if (el.classList.contains("is-packshot")) return;
     el.addEventListener("pointermove", (e) => {
       const r = el.getBoundingClientRect();
       const px = (e.clientX - r.left) / r.width - 0.5;

@@ -33,6 +33,6 @@ Drop replacements in `static/images/`:
 
 - `hero.jpg` — main photo
 - `look.jpg`, `story.jpg` — section crops
-- `p1.jpg` … `p8.jpg` (+ optional `p*-hover.jpg`)
+- product photos in `static/images/`
 
 Logos live in `static/logos/`.
