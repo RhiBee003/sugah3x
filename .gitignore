@@ -1,0 +1,8 @@
+/target
+**/*.rs.bk
+.DS_Store
+node_modules/
+PUBLIC_URL.txt
+*.log
+.idea/
+.vscode/

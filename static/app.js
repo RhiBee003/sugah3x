@@ -1,0 +1,390 @@
+const state = {
+  products: [],
+  filter: "All",
+  cart: [],
+  cartOpen: false,
+  menuOpen: false,
+};
+
+const categories = ["All", "Dresses", "Tops", "Bottoms", "Sets", "Outerwear", "Shoes"];
+
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+
+function money(n) {
+  return `$${n}`;
+}
+
+function cartCount() {
+  return state.cart.reduce((sum, item) => sum + item.quantity, 0);
+}
+
+function cartSubtotal() {
+  return state.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+}
+
+function openCart() {
+  state.cartOpen = true;
+  renderCart();
+}
+
+function closeCart() {
+  state.cartOpen = false;
+  renderCart();
+}
+
+function addToCart(product) {
+  const existing = state.cart.find((item) => item.id === product.id);
+  if (existing) existing.quantity += 1;
+  else state.cart.push({ ...product, quantity: 1 });
+  openCart();
+  renderNav();
+}
+
+function removeFromCart(id) {
+  state.cart = state.cart.filter((item) => item.id !== id);
+  renderCart();
+  renderNav();
+}
+
+function updateQty(id, quantity) {
+  if (quantity <= 0) return removeFromCart(id);
+  const item = state.cart.find((i) => i.id === id);
+  if (item) item.quantity = quantity;
+  renderCart();
+  renderNav();
+}
+
+function renderNav() {
+  const countEl = $(".nav-cart-count");
+  if (countEl) countEl.textContent = String(cartCount());
+}
+
+function renderFilters() {
+  const toolbar = $(".shop-toolbar");
+  if (!toolbar) return;
+  toolbar.innerHTML = categories
+    .map(
+      (cat) => `
+      <button class="filter-btn${state.filter === cat ? " active" : ""}" data-filter="${cat}" type="button">
+        ${cat}
+      </button>`
+    )
+    .join("");
+
+  toolbar.onclick = (e) => {
+    const btn = e.target.closest("[data-filter]");
+    if (!btn) return;
+    state.filter = btn.dataset.filter;
+    renderFilters();
+    renderProducts();
+  };
+}
+
+function filteredProducts() {
+  if (state.filter === "All") return state.products;
+  return state.products.filter((p) => p.category === state.filter);
+}
+
+function renderProducts() {
+  const grid = $(".product-grid");
+  if (!grid) return;
+  const items = filteredProducts();
+  grid.innerHTML = items
+    .map(
+      (p) => `
+    <article class="product" data-reveal>
+      <div class="product-media" data-tilt>
+        ${p.tag ? `<span class="product-tag">${p.tag}</span>` : ""}
+        <img src="${p.image}" alt="${p.name}" loading="lazy" />
+        ${
+          p.hover_image
+            ? `<img class="hover" src="${p.hover_image}" alt="" aria-hidden="true" loading="lazy" />`
+            : ""
+        }
+        <button class="product-add" type="button" data-add="${p.id}">Add to bag</button>
+      </div>
+      <div class="product-meta">
+        <div>
+          <h3 class="product-name">${p.name}</h3>
+          <p class="product-category">${p.category}</p>
+        </div>
+        <p class="product-price">${money(p.price)}</p>
+      </div>
+    </article>`
+    )
+    .join("");
+
+  grid.onclick = (e) => {
+    const btn = e.target.closest("[data-add]");
+    if (!btn) return;
+    const product = state.products.find((p) => p.id === btn.dataset.add);
+    if (product) addToCart(product);
+  };
+
+  observeReveal();
+  wireTilt($$("[data-tilt]", grid));
+}
+
+function renderCart() {
+  const drawer = $(".cart-drawer");
+  const backdrop = $(".cart-backdrop");
+  if (!drawer || !backdrop) return;
+
+  drawer.classList.toggle("open", state.cartOpen);
+  backdrop.classList.toggle("open", state.cartOpen);
+  drawer.setAttribute("aria-hidden", state.cartOpen ? "false" : "true");
+
+  const body = $(".cart-body");
+  if (!state.cart.length) {
+    body.innerHTML = `<p class="cart-empty">Bag's empty — go make a mess in the shop.</p>`;
+  } else {
+    body.innerHTML = state.cart
+      .map(
+        (item) => `
+      <div class="cart-item">
+        <img src="${item.image}" alt="${item.name}" />
+        <div>
+          <div class="cart-item-top">
+            <h3>${item.name}</h3>
+            <button type="button" data-remove="${item.id}">Remove</button>
+          </div>
+          <p class="cart-item-meta">${money(item.price)}</p>
+          <div class="qty">
+            <button type="button" data-qty="${item.id}" data-delta="-1" aria-label="Decrease">−</button>
+            <span>${item.quantity}</span>
+            <button type="button" data-qty="${item.id}" data-delta="1" aria-label="Increase">+</button>
+          </div>
+        </div>
+      </div>`
+      )
+      .join("");
+  }
+
+  $(".cart-subtotal strong").textContent = money(cartSubtotal());
+  const checkout = $(".cart-checkout");
+  checkout.disabled = state.cart.length === 0;
+
+  body.onclick = (e) => {
+    const remove = e.target.closest("[data-remove]");
+    if (remove) return removeFromCart(remove.dataset.remove);
+    const qty = e.target.closest("[data-qty]");
+    if (!qty) return;
+    const item = state.cart.find((i) => i.id === qty.dataset.qty);
+    if (!item) return;
+    updateQty(item.id, item.quantity + Number(qty.dataset.delta));
+  };
+}
+
+function wireCursor() {
+  if (window.matchMedia("(hover: none), (pointer: coarse)").matches) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const root = $(".cursor");
+  const ring = $(".cursor-ring");
+  const dot = $(".cursor-dot");
+  if (!root || !ring || !dot) return;
+
+  let x = window.innerWidth / 2;
+  let y = window.innerHeight / 2;
+  let rx = x;
+  let ry = y;
+
+  window.addEventListener(
+    "pointermove",
+    (e) => {
+      x = e.clientX;
+      y = e.clientY;
+      dot.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+    },
+    { passive: true }
+  );
+
+  window.addEventListener("pointerdown", () => document.body.classList.add("is-pressing"));
+  window.addEventListener("pointerup", () => document.body.classList.remove("is-pressing"));
+
+  const hoverables = "a, button, input, .product-media, .film-frame, [data-magnetic]";
+  document.addEventListener("pointerover", (e) => {
+    if (e.target.closest(hoverables)) document.body.classList.add("is-hovering");
+  });
+  document.addEventListener("pointerout", (e) => {
+    if (e.target.closest(hoverables)) document.body.classList.remove("is-hovering");
+  });
+
+  const tick = () => {
+    rx += (x - rx) * 0.18;
+    ry += (y - ry) * 0.18;
+    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+    requestAnimationFrame(tick);
+  };
+  tick();
+}
+
+function wireMagnetic() {
+  if (window.matchMedia("(hover: none), (pointer: coarse)").matches) return;
+  $$("[data-magnetic]").forEach((el) => {
+    el.addEventListener("pointermove", (e) => {
+      const r = el.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width / 2);
+      const dy = e.clientY - (r.top + r.height / 2);
+      el.style.transform = `translate(${dx * 0.18}px, ${dy * 0.22}px)`;
+    });
+    el.addEventListener("pointerleave", () => {
+      el.style.transform = "";
+    });
+  });
+}
+
+function wireTilt(nodes) {
+  if (window.matchMedia("(hover: none), (pointer: coarse)").matches) return;
+  nodes.forEach((el) => {
+    el.addEventListener("pointermove", (e) => {
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transform = `rotateX(${(-py * 7).toFixed(2)}deg) rotateY(${(px * 8).toFixed(2)}deg)`;
+    });
+    el.addEventListener("pointerleave", () => {
+      el.style.transform = "";
+    });
+  });
+}
+
+function wireParallax() {
+  const media = $("[data-parallax]");
+  if (!media) return;
+  const img = media.querySelector("img");
+  if (!img) return;
+
+  const onScroll = () => {
+    const y = Math.min(window.scrollY, window.innerHeight);
+    img.style.transform = `scale(1.08) translate3d(0, ${y * 0.18}px, 0)`;
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+}
+
+function wireScrollThread() {
+  const bar = $(".scroll-thread i");
+  if (!bar) return;
+  const onScroll = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const p = max > 0 ? (window.scrollY / max) * 100 : 0;
+    bar.style.height = `${p}%`;
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+}
+
+function wireFilmDrag() {
+  const track = $(".film-track");
+  if (!track) return;
+  let down = false;
+  let startX = 0;
+  let scrollLeft = 0;
+
+  track.addEventListener("pointerdown", (e) => {
+    if (e.target.closest("a, button")) return;
+    down = true;
+    startX = e.clientX;
+    scrollLeft = track.scrollLeft;
+    track.setPointerCapture(e.pointerId);
+  });
+  track.addEventListener("pointermove", (e) => {
+    if (!down) return;
+    track.scrollLeft = scrollLeft - (e.clientX - startX);
+  });
+  track.addEventListener("pointerup", () => {
+    down = false;
+  });
+  track.addEventListener("pointercancel", () => {
+    down = false;
+  });
+}
+
+function observeReveal() {
+  const items = $$("[data-reveal]");
+  if (!items.length) return;
+  if (!("IntersectionObserver" in window)) {
+    items.forEach((el) => el.classList.add("is-in"));
+    return;
+  }
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-in");
+        io.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.18, rootMargin: "0px 0px -8% 0px" }
+  );
+  items.forEach((el) => io.observe(el));
+}
+
+function wireUi() {
+  const nav = $(".nav");
+  const onScroll = () => nav.classList.toggle("scrolled", window.scrollY > 20);
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  $(".nav-cart").addEventListener("click", openCart);
+  $(".cart-close").addEventListener("click", closeCart);
+  $(".cart-backdrop").addEventListener("click", closeCart);
+  $(".cart-checkout").addEventListener("click", () => {
+    state.cart = [];
+    closeCart();
+    renderNav();
+  });
+
+  const menuBtn = $(".nav-menu-btn");
+  const mobileNav = $(".mobile-nav");
+  menuBtn.addEventListener("click", () => {
+    state.menuOpen = !state.menuOpen;
+    mobileNav.classList.toggle("open", state.menuOpen);
+    nav.classList.toggle("scrolled", state.menuOpen || window.scrollY > 20);
+  });
+
+  $$(".mobile-nav a").forEach((a) =>
+    a.addEventListener("click", () => {
+      state.menuOpen = false;
+      mobileNav.classList.remove("open");
+    })
+  );
+
+  const CONTACT_EMAIL = "sugah3x@gmail.com";
+  const form = $(".newsletter-form");
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = form.querySelector("#email")?.value?.trim();
+    if (!email) return;
+    const subject = encodeURIComponent("SugaH3x list");
+    const body = encodeURIComponent(`New signup\n\nFrom: ${email}\n`);
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+    form.outerHTML = `<p>Opening mail to ${CONTACT_EMAIL}…</p>`;
+  });
+
+  wireCursor();
+  wireMagnetic();
+  wireParallax();
+  wireScrollThread();
+  wireFilmDrag();
+  wireTilt($$("[data-tilt]"));
+}
+
+async function boot() {
+  wireUi();
+  renderNav();
+  renderFilters();
+  renderCart();
+
+  try {
+    const res = await fetch("/api/products");
+    state.products = await res.json();
+  } catch {
+    state.products = [];
+  }
+  renderProducts();
+}
+
+boot();

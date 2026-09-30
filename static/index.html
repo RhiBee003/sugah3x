@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="SugaH3x — girl-owned alt clothing. Soft lace, sharp attitude."
+    />
+    <link rel="icon" type="image/png" href="/static/logos/logo-main.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500;1,6..96,700&family=Figtree:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/styles.css" />
+    <title>SugaH3x</title>
+  </head>
+  <body>
+    <div class="cursor" aria-hidden="true">
+      <span class="cursor-ring"></span>
+      <span class="cursor-dot"></span>
+    </div>
+    <div class="scroll-thread" aria-hidden="true"><i></i></div>
+
+    <div id="app">
+      <header class="nav">
+        <button class="nav-menu-btn" aria-label="Open menu" type="button">
+          <span></span>
+        </button>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#shop">Shop</a>
+          <a href="#film">Looks</a>
+          <a href="#story">About</a>
+        </nav>
+        <a class="nav-brand" href="#top" data-magnetic>Suga<span>H3x</span></a>
+        <div class="nav-actions">
+          <button class="nav-cart" type="button" aria-label="Open bag" data-magnetic>
+            <span class="label">Bag</span>
+            <span class="nav-cart-count">0</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="mobile-nav">
+        <a href="#shop">Shop</a>
+        <a href="#film">Looks</a>
+        <a href="#story">About</a>
+      </div>
+
+      <main>
+        <section class="hero" id="top" aria-label="SugaH3x">
+          <div class="hero-media" data-parallax>
+            <img
+              src="/static/images/hero.jpg"
+              alt="SugaH3x — cemetery picnic editorial"
+              width="904"
+              height="1356"
+            />
+          </div>
+          <div class="hero-copy">
+            <h1 class="hero-brand">Suga<span>H3x</span></h1>
+            <p class="hero-headline">Cemetery soft. Sharp teeth.</p>
+            <p class="hero-sub">
+              Lace, bows, and bad decisions — girl-owned from the ground up.
+            </p>
+            <div class="hero-ctas">
+              <a class="btn btn-primary" href="#shop" data-magnetic>Shop the drop</a>
+              <a class="btn btn-ghost" href="#film" data-magnetic>See the looks</a>
+            </div>
+          </div>
+          <a class="hero-scroll" href="#shop" aria-label="Scroll to shop">
+            <span>scroll</span>
+          </a>
+        </section>
+
+        <div class="rip" aria-hidden="true"></div>
+
+        <section class="section shop" id="shop">
+          <div class="section-head">
+            <h2 class="section-title">The drop</h2>
+            <p class="section-sub">
+              Pieces that look sweet until you get closer.
+            </p>
+          </div>
+          <div class="shop-toolbar" role="tablist" aria-label="Filter products"></div>
+          <div class="product-grid"></div>
+        </section>
+
+        <section class="film" id="film" aria-label="Look strip">
+          <div class="film-head">
+            <h2 class="section-title">Looks</h2>
+            <p class="section-sub">Drag sideways. Leave fingerprints.</p>
+          </div>
+          <div class="film-track" tabindex="0">
+            <figure class="film-frame is-hero">
+              <img src="/static/images/hero.jpg" alt="Cemetery picnic look" />
+              <figcaption>01 / picnic</figcaption>
+            </figure>
+            <figure class="film-frame">
+              <img src="/static/images/look.jpg" alt="Close crop look" />
+              <figcaption>02 / lace</figcaption>
+            </figure>
+            <figure class="film-frame">
+              <img src="/static/images/story.jpg" alt="Portrait crop" />
+              <figcaption>03 / stare</figcaption>
+            </figure>
+            <figure class="film-frame">
+              <img src="/static/images/p3.jpg" alt="Spiderweb detail" />
+              <figcaption>04 / web</figcaption>
+            </figure>
+            <figure class="film-frame">
+              <img src="/static/images/p6.jpg" alt="Set detail" />
+              <figcaption>05 / set</figcaption>
+            </figure>
+            <figure class="film-frame">
+              <img src="/static/images/p7.jpg" alt="Platform boots" />
+              <figcaption>06 / stomp</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="section story" id="story">
+          <div class="story-visual" data-tilt>
+            <img
+              src="/static/images/story.jpg"
+              alt="SugaH3x founders energy"
+            />
+            <span class="stamp" aria-hidden="true">girl owned</span>
+          </div>
+          <div class="story-copy">
+            <h2 class="section-title">Made for the girl who ruins the dress code</h2>
+            <p class="section-sub">
+              SugaH3x started as a private joke and turned into a closet. Pink
+              bows next to platform boots. Soft on purpose. Mean when it counts.
+            </p>
+            <a class="btn btn-ghost" href="#shop" data-magnetic>Back to the rack</a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="footer-top">
+          <div>
+            <p class="footer-brand">Suga<span>H3x</span></p>
+            <p>Alt pink clothing for girls who look sweet and leave early.</p>
+          </div>
+          <div>
+            <h2 class="section-title footer-news-title">Get first dibs</h2>
+            <form class="newsletter-form" id="contact-form">
+              <label class="sr-only" for="email">Email</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                placeholder="you@somewhere.com"
+                autocomplete="email"
+              />
+              <button class="btn" type="submit" data-magnetic>Join</button>
+            </form>
+            <p class="contact-email">
+              <a href="mailto:sugah3x@gmail.com">sugah3x@gmail.com</a>
+            </p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© <span id="year"></span> SugaH3x</p>
+          <div class="footer-links">
+            <a href="#shop">Shop</a>
+            <a href="#film">Looks</a>
+            <a href="#story">About</a>
+            <a href="mailto:sugah3x@gmail.com">Email</a>
+          </div>
+        </div>
+      </footer>
+
+      <div class="cart-backdrop" aria-hidden="true"></div>
+      <aside class="cart-drawer" aria-hidden="true" aria-label="Shopping bag">
+        <div class="cart-header">
+          <h2>Your bag</h2>
+          <button class="cart-close" type="button" aria-label="Close bag">
+            ×
+          </button>
+        </div>
+        <div class="cart-body"></div>
+        <div class="cart-footer">
+          <div class="cart-subtotal">
+            <span>Total</span>
+            <strong>$0</strong>
+          </div>
+          <button class="btn btn-primary cart-checkout" type="button" disabled>
+            Checkout
+          </button>
+          <p class="cart-note">Demo bag — clears after checkout.</p>
+        </div>
+      </aside>
+    </div>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>
