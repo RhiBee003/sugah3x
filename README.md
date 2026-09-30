@@ -7,7 +7,7 @@ Girl-owned alt clothing shop — Rust (Axum) backend + static storefront.
 **Needs:** [Rust](https://rustup.rs/) (stable)
 
 ```bash
-git clone https://github.com/<your-username>/sugah3x.git
+git clone https://github.com/RhiBee003/sugah3x.git
 cd sugah3x
 cargo run --release
 ```
