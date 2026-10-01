@@ -35,9 +35,20 @@ function closeCart() {
   renderCart();
 }
 
-function openSoonAlert() {
+function openSoonAlert(kind = "soon") {
   const alert = $(".soon-alert");
-  if (!alert) return;
+  const title = $("#soon-title");
+  const copy = $("#soon-copy");
+  if (!alert || !title || !copy) return;
+
+  if (kind === "stock") {
+    title.textContent = "Everything is out of stock";
+    copy.textContent = "Coming soon!";
+  } else {
+    title.textContent = "Not currently accepting orders";
+    copy.textContent = "Coming soon!";
+  }
+
   alert.hidden = false;
   document.body.classList.add("soon-open");
   $(".soon-alert-ok")?.focus();
@@ -208,7 +219,8 @@ function renderCart() {
 
   $(".cart-subtotal strong").textContent = money(cartSubtotal());
   const checkout = $(".cart-checkout");
-  checkout.disabled = state.cart.length === 0;
+  checkout.disabled = false;
+  checkout.setAttribute("aria-disabled", "true");
 
   body.onclick = (e) => {
     const remove = e.target.closest("[data-remove]");
@@ -378,9 +390,11 @@ function wireUi() {
   $(".nav-cart").addEventListener("click", openCart);
   $(".cart-close").addEventListener("click", closeCart);
   $(".cart-backdrop").addEventListener("click", closeCart);
-  $(".cart-checkout").addEventListener("click", () => {
+  $(".cart-checkout").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     closeCart();
-    openSoonAlert();
+    openSoonAlert("stock");
   });
 
   const menuBtn = $(".nav-menu-btn");
