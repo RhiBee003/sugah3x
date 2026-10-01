@@ -252,6 +252,7 @@ function wireTilt(nodes) {
 }
 
 function wireParallax() {
+  if (window.matchMedia("(hover: none), (pointer: coarse)").matches) return;
   const media = $("[data-parallax]");
   if (!media) return;
   const img = media.querySelector("img");

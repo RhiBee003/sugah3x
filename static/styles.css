@@ -1205,6 +1205,17 @@ body.is-pressing .cursor-ring {
 }
 
 @media (max-width: 900px) {
+  .hero {
+    min-height: 100svh;
+    min-height: 100dvh;
+  }
+
+  .hero-media img {
+    object-position: center top;
+    transform: none;
+    transform-origin: center top;
+  }
+
   .product,
   .product.is-packshot-card {
     grid-column: span 6 !important;
