@@ -7,7 +7,18 @@ const state = {
   menuOpen: false,
 };
 
-const categories = ["All", "Dresses", "Tops", "Bottoms", "Sets", "Rave", "Lingerie", "Outerwear"];
+const categories = [
+  "All",
+  "Dresses",
+  "Tops",
+  "Bottoms",
+  "Sets",
+  "Rave",
+  "Lingerie",
+  "Outerwear",
+  "Shoes",
+  "Stickers",
+];
 const sizes = ["XS", "S", "M", "L"];
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -437,6 +448,14 @@ function wireUi() {
       mobileNav.classList.remove("open");
     })
   );
+
+  document.addEventListener("click", (e) => {
+    const jump = e.target.closest("[data-filter-jump]");
+    if (!jump) return;
+    state.filter = jump.dataset.filterJump;
+    renderFilters();
+    renderProducts();
+  });
 
   const CONTACT_EMAIL = "sugah3x@gmail.com";
   const form = $(".newsletter-form");

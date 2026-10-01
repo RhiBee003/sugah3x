@@ -46,6 +46,20 @@ The first build takes a few minutes. If the last deploy failed with `npm` / `pac
 - Product API: `GET /api/products`
 - Health: `GET /health`
 
+## Stickers
+
+Print-ready brand stickers live in `static/stickers/`:
+
+- `wordmark.png`
+- `cemetery-soft.png`
+- `hex-bow.png`
+- `pretty-poison.png`
+- `girl-owned.png`
+- `hex-kitty.png`
+- `pack-sheet.png` — all six on one sheet
+
+Transparent PNGs with white die-cut borders — ready for Sticker Mule / Canva print.
+
 ## Swap images
 
 Drop replacements in `static/images/`:

@@ -292,6 +292,42 @@ fn catalog() -> Vec<Product> {
             tag: None,
             packshot: false,
         },
+        Product {
+            id: "sticker-pack",
+            name: "SugaH3x Sticker Pack",
+            price: 12,
+            category: "Stickers",
+            image: "/static/stickers/pack-sheet.png",
+            hover_image: Some("/static/stickers/wordmark.png"),
+            tag: Some("New"),
+        },
+        Product {
+            id: "sticker-pretty-poison",
+            name: "Pretty Poison Sticker",
+            price: 4,
+            category: "Stickers",
+            image: "/static/stickers/pretty-poison.png",
+            hover_image: None,
+            tag: None,
+        },
+        Product {
+            id: "sticker-hex-bow",
+            name: "Hex Bow Sticker",
+            price: 4,
+            category: "Stickers",
+            image: "/static/stickers/hex-bow.png",
+            hover_image: None,
+            tag: None,
+        },
+        Product {
+            id: "sticker-hex-kitty",
+            name: "Hex Kitty Sticker",
+            price: 4,
+            category: "Stickers",
+            image: "/static/stickers/hex-kitty.png",
+            hover_image: None,
+            tag: None,
+        },
     ]
 }
 

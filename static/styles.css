@@ -685,6 +685,15 @@ body.is-pressing .cursor-ring {
   height: 100%;
 }
 
+.product-media img[src*="/stickers/"] {
+  object-fit: contain;
+  padding: 12%;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(243, 167, 188, 0.18), transparent 45%),
+    #1c1a17;
+  filter: none;
+}
+
 .product-media .hover {
   position: absolute;
   inset: 0;
@@ -821,6 +830,80 @@ body.is-pressing .cursor-ring {
   border-color: var(--bow);
   color: var(--grave);
   background: var(--bow);
+}
+
+/* Stickers wall */
+.stickers {
+  background:
+    radial-gradient(700px 360px at 10% 20%, rgba(243, 167, 188, 0.1), transparent 55%),
+    radial-gradient(600px 320px at 90% 80%, rgba(90, 107, 82, 0.1), transparent 50%);
+}
+
+.sticker-wall {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1rem, 3vw, 1.75rem);
+  margin-bottom: 1.75rem;
+}
+
+.sticker-card {
+  margin: 0;
+  display: grid;
+  gap: 0.65rem;
+  justify-items: center;
+  padding: 1.1rem 0.9rem 1rem;
+  background: rgba(239, 232, 223, 0.04);
+  border: 1px dashed rgba(243, 167, 188, 0.35);
+  transform: rotate(var(--r, 0deg));
+  transition: transform 0.35s var(--ease), border-color 0.25s, background 0.25s;
+}
+
+.sticker-card:hover {
+  transform: rotate(0deg) scale(1.03);
+  border-color: var(--bow);
+  background: rgba(243, 167, 188, 0.08);
+}
+
+.sticker-card img {
+  width: min(100%, 260px);
+  height: auto;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.35));
+  transition: transform 0.35s var(--ease);
+}
+
+.sticker-card:hover img {
+  transform: translateY(-4px);
+}
+
+.sticker-card figcaption {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.sticker-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+@media (max-width: 900px) {
+  .sticker-wall {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .sticker-wall {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .sticker-card {
+    padding: 0.75rem 0.55rem 0.7rem;
+  }
 }
 
 /* Horizontal film strip */
