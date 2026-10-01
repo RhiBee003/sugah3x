@@ -20,12 +20,25 @@ const categories = [
   "Stickers",
 ];
 const sizes = ["XS", "S", "M", "L"];
+const shoeSizes = ["6", "7", "8", "9", "10"];
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
 function money(n) {
   return `$${n}`;
+}
+
+function sizeOptionsFor(product) {
+  if (product.category === "Stickers") return [];
+  if (product.category === "Shoes") return shoeSizes;
+  return sizes;
+}
+
+function defaultSizeFor(product) {
+  if (product.category === "Shoes") return "7";
+  if (product.category === "Stickers") return "OS";
+  return "M";
 }
 
 function cartCount() {
@@ -103,7 +116,9 @@ function wireSoonAlert() {
 }
 
 function sizeFor(productId) {
-  return state.selectedSizes[productId] || "M";
+  if (state.selectedSizes[productId]) return state.selectedSizes[productId];
+  const product = state.products.find((p) => p.id === productId);
+  return product ? defaultSizeFor(product) : "M";
 }
 
 function addToCart(product, size) {
@@ -186,14 +201,18 @@ function renderProducts() {
           </div>
           <p class="product-price">${money(p.price)}</p>
         </div>
-        <div class="product-sizes" role="group" aria-label="Size for ${p.name}">
-          ${sizes
+        ${
+          sizeOptionsFor(p).length
+            ? `<div class="product-sizes" role="group" aria-label="Size for ${p.name}">
+          ${sizeOptionsFor(p)
             .map(
               (s) => `
             <button type="button" class="size-btn${sizeFor(p.id) === s ? " active" : ""}" data-size="${s}" data-product="${p.id}">${s}</button>`
             )
             .join("")}
-        </div>
+        </div>`
+            : ""
+        }
       </div>
     </article>`
     )
