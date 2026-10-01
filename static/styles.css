@@ -745,10 +745,16 @@ body.is-pressing .cursor-ring {
 
 .product-meta {
   display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0 0.15rem;
+}
+
+.product-meta-row {
+  display: flex;
   justify-content: space-between;
   gap: 0.8rem;
   align-items: baseline;
-  padding: 0 0.15rem;
 }
 
 .product-name {
@@ -774,6 +780,32 @@ body.is-pressing .cursor-ring {
   font-size: 0.95rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
+}
+
+.product-sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.size-btn {
+  min-width: 44px;
+  min-height: 36px;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background 0.2s var(--ease), color 0.2s, border-color 0.2s;
+}
+
+.size-btn:hover,
+.size-btn.active {
+  border-color: var(--bow);
+  color: var(--grave);
+  background: var(--bow);
 }
 
 /* Horizontal film strip */

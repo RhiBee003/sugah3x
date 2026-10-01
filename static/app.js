@@ -2,11 +2,13 @@ const state = {
   products: [],
   filter: "All",
   cart: [],
+  selectedSizes: {},
   cartOpen: false,
   menuOpen: false,
 };
 
 const categories = ["All", "Dresses", "Tops", "Bottoms", "Sets", "Lingerie", "Outerwear"];
+const sizes = ["XS", "S", "M", "L"];
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -89,23 +91,28 @@ function wireSoonAlert() {
   }
 }
 
-function addToCart(product) {
-  const existing = state.cart.find((item) => item.id === product.id);
+function sizeFor(productId) {
+  return state.selectedSizes[productId] || "M";
+}
+
+function addToCart(product, size) {
+  const pick = size || sizeFor(product.id);
+  const existing = state.cart.find((item) => item.id === product.id && item.size === pick);
   if (existing) existing.quantity += 1;
-  else state.cart.push({ ...product, quantity: 1 });
+  else state.cart.push({ ...product, size: pick, quantity: 1 });
   openCart();
   renderNav();
 }
 
-function removeFromCart(id) {
-  state.cart = state.cart.filter((item) => item.id !== id);
+function removeFromCart(id, size) {
+  state.cart = state.cart.filter((item) => !(item.id === id && item.size === size));
   renderCart();
   renderNav();
 }
 
-function updateQty(id, quantity) {
-  if (quantity <= 0) return removeFromCart(id);
-  const item = state.cart.find((i) => i.id === id);
+function updateQty(id, size, quantity) {
+  if (quantity <= 0) return removeFromCart(id, size);
+  const item = state.cart.find((i) => i.id === id && i.size === size);
   if (item) item.quantity = quantity;
   renderCart();
   renderNav();
@@ -161,21 +168,40 @@ function renderProducts() {
         <button class="product-add" type="button" data-add="${p.id}">Add to bag</button>
       </div>
       <div class="product-meta">
-        <div>
-          <h3 class="product-name">${p.name}</h3>
-          <p class="product-category">${p.category}</p>
+        <div class="product-meta-row">
+          <div>
+            <h3 class="product-name">${p.name}</h3>
+            <p class="product-category">${p.category}</p>
+          </div>
+          <p class="product-price">${money(p.price)}</p>
         </div>
-        <p class="product-price">${money(p.price)}</p>
+        <div class="product-sizes" role="group" aria-label="Size for ${p.name}">
+          ${sizes
+            .map(
+              (s) => `
+            <button type="button" class="size-btn${sizeFor(p.id) === s ? " active" : ""}" data-size="${s}" data-product="${p.id}">${s}</button>`
+            )
+            .join("")}
+        </div>
       </div>
     </article>`
     )
     .join("");
 
   grid.onclick = (e) => {
+    const sizeBtn = e.target.closest("[data-size][data-product]");
+    if (sizeBtn) {
+      state.selectedSizes[sizeBtn.dataset.product] = sizeBtn.dataset.size;
+      const group = sizeBtn.closest(".product-sizes");
+      group?.querySelectorAll(".size-btn").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.size === sizeBtn.dataset.size);
+      });
+      return;
+    }
     const btn = e.target.closest("[data-add]");
     if (!btn) return;
     const product = state.products.find((p) => p.id === btn.dataset.add);
-    if (product) addToCart(product);
+    if (product) addToCart(product, sizeFor(product.id));
   };
 
   observeReveal();
@@ -203,13 +229,13 @@ function renderCart() {
         <div>
           <div class="cart-item-top">
             <h3>${item.name}</h3>
-            <button type="button" data-remove="${item.id}">Remove</button>
+            <button type="button" data-remove="${item.id}" data-size="${item.size}">Remove</button>
           </div>
-          <p class="cart-item-meta">${money(item.price)}</p>
+          <p class="cart-item-meta">${money(item.price)} · ${item.size}</p>
           <div class="qty">
-            <button type="button" data-qty="${item.id}" data-delta="-1" aria-label="Decrease">−</button>
+            <button type="button" data-qty="${item.id}" data-size="${item.size}" data-delta="-1" aria-label="Decrease">−</button>
             <span>${item.quantity}</span>
-            <button type="button" data-qty="${item.id}" data-delta="1" aria-label="Increase">+</button>
+            <button type="button" data-qty="${item.id}" data-size="${item.size}" data-delta="1" aria-label="Increase">+</button>
           </div>
         </div>
       </div>`
@@ -224,12 +250,12 @@ function renderCart() {
 
   body.onclick = (e) => {
     const remove = e.target.closest("[data-remove]");
-    if (remove) return removeFromCart(remove.dataset.remove);
+    if (remove) return removeFromCart(remove.dataset.remove, remove.dataset.size);
     const qty = e.target.closest("[data-qty]");
     if (!qty) return;
-    const item = state.cart.find((i) => i.id === qty.dataset.qty);
+    const item = state.cart.find((i) => i.id === qty.dataset.qty && i.size === qty.dataset.size);
     if (!item) return;
-    updateQty(item.id, item.quantity + Number(qty.dataset.delta));
+    updateQty(item.id, item.size, item.quantity + Number(qty.dataset.delta));
   };
 }
 
@@ -260,7 +286,7 @@ function wireCursor() {
   window.addEventListener("pointerdown", () => document.body.classList.add("is-pressing"));
   window.addEventListener("pointerup", () => document.body.classList.remove("is-pressing"));
 
-  const hoverables = "a, button, input, .product-media, .film-frame, [data-magnetic]";
+  const hoverables = "a, button, input, .product-media, .film-frame, .size-btn, [data-magnetic]";
   document.addEventListener("pointerover", (e) => {
     if (e.target.closest(hoverables)) document.body.classList.add("is-hovering");
   });
