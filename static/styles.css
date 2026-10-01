@@ -224,14 +224,33 @@ body.is-pressing .cursor-ring {
   transform: translateX(-50%);
   display: flex;
   align-items: center;
-  line-height: 0;
+  gap: 0.5rem;
 }
 
-.nav-brand img {
-  height: 46px;
-  width: auto;
-  display: block;
-  border-radius: 5px;
+.nav-mark {
+  height: 34px;
+  width: 34px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.nav-wordmark {
+  font-family: var(--font-brand);
+  font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.nav-wordmark span {
+  color: var(--bow);
+  font-style: normal;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.78em;
+  letter-spacing: -0.02em;
 }
 
 .nav-cart {
@@ -1364,6 +1383,11 @@ body.soon-open .soon-ribbon {
   .nav-brand {
     position: static;
     transform: none;
+  }
+
+  .nav-mark {
+    height: 30px;
+    width: 30px;
   }
 
   .mobile-nav {
