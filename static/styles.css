@@ -222,21 +222,16 @@ body.is-pressing .cursor-ring {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  font-family: var(--font-brand);
-  font-size: clamp(1.55rem, 3vw, 1.95rem);
-  font-style: italic;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  line-height: 1;
+  display: flex;
+  align-items: center;
+  line-height: 0;
 }
 
-.nav-brand span {
-  color: var(--bow);
-  font-style: normal;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 0.78em;
-  letter-spacing: -0.02em;
+.nav-brand img {
+  height: 46px;
+  width: auto;
+  display: block;
+  border-radius: 5px;
 }
 
 .nav-cart {
@@ -964,19 +959,13 @@ body.is-pressing .cursor-ring {
 
 .footer-brand {
   margin: 0 0 0.65rem;
-  font-family: var(--font-brand);
-  font-style: italic;
-  font-weight: 700;
-  font-size: clamp(2.4rem, 6vw, 3.8rem);
-  line-height: 0.9;
 }
 
-.footer-brand span {
-  color: var(--bow);
-  font-family: var(--font-display);
-  font-style: normal;
-  font-weight: 800;
-  font-size: 0.82em;
+.footer-brand img {
+  height: clamp(5.2rem, 16vw, 8rem);
+  width: auto;
+  display: block;
+  border-radius: 10px;
 }
 
 .footer p {
