@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500;1,6..96,700&family=Figtree:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/static/styles.css?v=iphone-hero" />
+    <link rel="stylesheet" href="/static/styles.css?v=coming-soon" />
     <title>SugaH3x</title>
   </head>
   <body>
@@ -176,6 +176,25 @@
         </div>
       </footer>
 
+      <div class="soon-ribbon" role="status">
+        Not currently accepting orders — coming soon!
+      </div>
+
+      <div class="soon-alert" hidden>
+        <div
+          class="soon-alert-card"
+          role="alertdialog"
+          aria-modal="true"
+          aria-labelledby="soon-title"
+          aria-describedby="soon-copy"
+        >
+          <p class="soon-alert-kicker" aria-hidden="true">♡ just so you know ♡</p>
+          <h2 id="soon-title">Not currently accepting orders</h2>
+          <p id="soon-copy">Coming soon!</p>
+          <button class="btn btn-primary soon-alert-ok" type="button">Okay ♡</button>
+        </div>
+      </div>
+
       <div class="cart-backdrop" aria-hidden="true"></div>
       <aside class="cart-drawer" aria-hidden="true" aria-label="Shopping bag">
         <div class="cart-header">
@@ -193,13 +212,13 @@
           <button class="btn btn-primary cart-checkout" type="button" disabled>
             Checkout
           </button>
-          <p class="cart-note">Demo bag — clears after checkout.</p>
+          <p class="cart-note">Orders aren't open yet — coming soon!</p>
         </div>
       </aside>
     </div>
     <script>
       document.getElementById("year").textContent = new Date().getFullYear();
     </script>
-    <script src="/static/app.js?v=iphone-hero" defer></script>
+    <script src="/static/app.js?v=coming-soon" defer></script>
   </body>
 </html>

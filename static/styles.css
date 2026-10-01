@@ -1017,6 +1017,108 @@ body.is-pressing .cursor-ring {
   color: var(--bow);
 }
 
+/* Coming soon */
+.soon-ribbon {
+  position: fixed;
+  left: 50%;
+  bottom: max(0.9rem, env(safe-area-inset-bottom));
+  z-index: 55;
+  max-width: calc(100% - 1.6rem);
+  padding: 0.55rem 1.15rem;
+  background: var(--bow);
+  color: var(--grave);
+  border-radius: 999px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.32);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: center;
+  transform: translateX(-50%) rotate(-1.2deg);
+  pointer-events: none;
+}
+
+body.soon-open {
+  overflow: hidden;
+}
+
+body.cart-open .soon-ribbon,
+body.soon-open .soon-ribbon {
+  opacity: 0;
+}
+
+.soon-alert {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: max(1.2rem, env(safe-area-inset-top)) 1.2rem max(1.2rem, env(safe-area-inset-bottom));
+  background: rgba(20, 19, 17, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.soon-alert[hidden] {
+  display: none;
+}
+
+.soon-alert-card {
+  width: min(22.5rem, 100%);
+  padding: 1.7rem 1.45rem 1.45rem;
+  background: var(--lace);
+  color: var(--grave);
+  border: 2px dashed var(--blush);
+  border-radius: 22px;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  animation: soon-pop 0.45s var(--ease-out) both;
+}
+
+@keyframes soon-pop {
+  from {
+    opacity: 0;
+    transform: rotate(-1.4deg) translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-1.4deg) translateY(0);
+  }
+}
+
+.soon-alert-kicker {
+  margin: 0 0 0.55rem;
+  color: var(--blush);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.soon-alert-card h2 {
+  margin: 0 0 0.45rem;
+  font-family: var(--font-brand);
+  font-size: clamp(1.7rem, 6vw, 2.15rem);
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.soon-alert-card p#soon-copy {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--blush);
+}
+
+.soon-alert-ok {
+  width: 100%;
+  background: var(--bow);
+  color: var(--grave);
+}
+
 /* Cart */
 .cart-backdrop {
   position: fixed;

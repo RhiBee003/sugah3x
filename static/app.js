@@ -25,12 +25,57 @@ function cartSubtotal() {
 
 function openCart() {
   state.cartOpen = true;
+  document.body.classList.add("cart-open");
   renderCart();
 }
 
 function closeCart() {
   state.cartOpen = false;
+  document.body.classList.remove("cart-open");
   renderCart();
+}
+
+function openSoonAlert() {
+  const alert = $(".soon-alert");
+  if (!alert) return;
+  alert.hidden = false;
+  document.body.classList.add("soon-open");
+  $(".soon-alert-ok")?.focus();
+}
+
+function closeSoonAlert() {
+  const alert = $(".soon-alert");
+  if (!alert) return;
+  alert.hidden = true;
+  document.body.classList.remove("soon-open");
+  try {
+    sessionStorage.setItem("sugah3x-soon-seen", "1");
+  } catch {
+    /* ignore */
+  }
+}
+
+function wireSoonAlert() {
+  const alert = $(".soon-alert");
+  if (!alert) return;
+
+  $(".soon-alert-ok")?.addEventListener("click", closeSoonAlert);
+  alert.addEventListener("click", (e) => {
+    if (e.target === alert) closeSoonAlert();
+  });
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !alert.hidden) closeSoonAlert();
+  });
+
+  let seen = false;
+  try {
+    seen = sessionStorage.getItem("sugah3x-soon-seen") === "1";
+  } catch {
+    seen = false;
+  }
+  if (!seen) {
+    window.setTimeout(openSoonAlert, 480);
+  }
 }
 
 function addToCart(product) {
@@ -334,9 +379,8 @@ function wireUi() {
   $(".cart-close").addEventListener("click", closeCart);
   $(".cart-backdrop").addEventListener("click", closeCart);
   $(".cart-checkout").addEventListener("click", () => {
-    state.cart = [];
     closeCart();
-    renderNav();
+    openSoonAlert();
   });
 
   const menuBtn = $(".nav-menu-btn");
@@ -366,6 +410,7 @@ function wireUi() {
     form.outerHTML = `<p>Opening mail to ${CONTACT_EMAIL}…</p>`;
   });
 
+  wireSoonAlert();
   wireCursor();
   wireMagnetic();
   wireParallax();
