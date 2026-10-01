@@ -157,7 +157,7 @@ function renderProducts() {
     .map(
       (p) => `
     <article class="product${p.packshot ? " is-packshot-card" : ""}" data-reveal>
-      <div class="product-media${p.packshot ? " is-packshot" : ""}${p.id === "savage-sweats" ? " is-bow" : ""}${["savage-tee", "bow-cargo-pants", "lace-hem-romper"].includes(p.id) ? " is-grave" : ""}" data-tilt>
+      <div class="product-media${p.packshot ? " is-packshot" : ""}${p.id === "savage-sweats" ? " is-bow" : ""}${["savage-tee", "bow-cargo-pants", "lace-hem-romper", "patent-rave-set", "blush-afters-set"].includes(p.id) ? " is-grave" : ""}" data-tilt>
         ${p.tag ? `<span class="product-tag">${p.tag}</span>` : ""}
         <img src="${p.image}" alt="${p.name}" loading="lazy" />
         ${
