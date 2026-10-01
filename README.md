@@ -20,6 +20,25 @@ Optional port:
 PORT=8080 cargo run --release
 ```
 
+## Deploy on Render
+
+This is a **Rust web service**, not a static site and not Node.
+
+1. In [Render](https://dashboard.render.com/), create a **Web Service** (not Static Site).
+2. Connect `RhiBee003/sugah3x`, branch `main`.
+3. Set:
+
+| Field | Value |
+| --- | --- |
+| Language | **Rust** |
+| Build Command | `cargo build --release --locked` |
+| Start Command | `./target/release/sugarhex-rs` |
+| Health Check Path | `/health` |
+
+Or open [Deploy to Render](https://render.com/deploy?repo=https://github.com/RhiBee003/sugah3x) and apply the `render.yaml` Blueprint.
+
+The first build takes a few minutes. If the last deploy failed with `npm` / `package.json` errors, the service was created as Node — change Language to **Rust** and use the commands above, then **Manual Deploy**.
+
 ## What’s included
 
 - Full-bleed hero (cemetery editorial)

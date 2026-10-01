@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: sugah3x
+    runtime: rust
+    buildCommand: cargo build --release --locked
+    startCommand: ./target/release/sugarhex-rs
+    healthCheckPath: /health
