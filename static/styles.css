@@ -228,11 +228,12 @@ body.is-pressing .cursor-ring {
 }
 
 .nav-mark {
-  height: 34px;
-  width: 34px;
-  object-fit: cover;
+  height: 40px;
+  width: 40px;
+  object-fit: contain;
   border-radius: 6px;
   flex-shrink: 0;
+  background: #000;
 }
 
 .nav-wordmark {
@@ -1386,8 +1387,8 @@ body.soon-open .soon-ribbon {
   }
 
   .nav-mark {
-    height: 30px;
-    width: 30px;
+    height: 36px;
+    width: 36px;
   }
 
   .mobile-nav {
