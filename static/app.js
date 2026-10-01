@@ -7,7 +7,7 @@ const state = {
   menuOpen: false,
 };
 
-const categories = ["All", "Dresses", "Tops", "Bottoms", "Sets", "Lingerie", "Outerwear"];
+const categories = ["All", "Dresses", "Tops", "Bottoms", "Sets", "Rave", "Lingerie", "Outerwear"];
 const sizes = ["XS", "S", "M", "L"];
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -157,7 +157,7 @@ function renderProducts() {
     .map(
       (p) => `
     <article class="product${p.packshot ? " is-packshot-card" : ""}" data-reveal>
-      <div class="product-media${p.packshot ? " is-packshot" : ""}${p.id === "savage-sweats" ? " is-bow" : ""}${["savage-tee", "bow-cargo-pants", "lace-hem-romper", "patent-rave-set", "blush-afters-set"].includes(p.id) ? " is-grave" : ""}" data-tilt>
+      <div class="product-media${p.packshot ? " is-packshot" : ""}${p.id === "savage-sweats" ? " is-bow" : ""}${["savage-tee", "bow-cargo-pants", "lace-hem-romper", "patent-rave-set", "blush-afters-set", "vinyl-bow-rave", "afters-robe-rave", "wrap-mini-rave"].includes(p.id) ? " is-grave" : ""}" data-tilt>
         ${p.tag ? `<span class="product-tag">${p.tag}</span>` : ""}
         <img src="${p.image}" alt="${p.name}" loading="lazy" />
         ${
