@@ -48,7 +48,7 @@ fn catalog() -> Vec<Product> {
             price: 48,
             category: "Tops",
             image: "/static/images/crafts-tee-front.jpg",
-            hover_image: Some("/static/images/crafts-tee-back.jpg"),
+            hover_image: Some("/static/images/crafts-tee-back.jpg?v=us"),
             tag: Some("Just in"),
             packshot: true,
         },
