@@ -69,3 +69,13 @@ Drop replacements in `static/images/`:
 - product photos in `static/images/`
 
 Logos live in `static/logos/`.
+
+## Instagram highlight covers
+
+Black + pink circular highlight nails in `static/instagram-highlights/`:
+
+- `brand`, `shop`, `looks`, `new`, `shoes`, `poison`, `owned`, `dm`
+- Use the `*-square.png` files when setting Instagram highlight covers (IG crops to circle)
+- `*-circle.png` are pre-cropped previews
+- `highlights-pack.png` is the full set
+
