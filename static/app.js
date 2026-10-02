@@ -183,12 +183,12 @@ function renderProducts() {
     .map(
       (p) => `
     <article class="product${p.packshot ? " is-packshot-card" : ""}" data-reveal>
-      <div class="product-media${p.packshot ? " is-packshot" : ""}${p.id === "savage-sweats" ? " is-bow" : ""}${["savage-tee", "bow-cargo-pants", "lace-hem-romper", "patent-rave-set", "blush-afters-set", "vinyl-bow-rave", "afters-robe-rave", "wrap-mini-rave"].includes(p.id) ? " is-grave" : ""}" data-tilt>
+      <div class="product-media${p.packshot ? " is-packshot" : ""}${p.id === "savage-sweats" ? " is-bow" : ""}${["savage-tee", "crafts-tee", "bow-cargo-pants", "lace-hem-romper", "patent-rave-set", "blush-afters-set", "vinyl-bow-rave", "afters-robe-rave", "wrap-mini-rave"].includes(p.id) ? " is-grave" : ""}" data-tilt>
         ${p.tag ? `<span class="product-tag">${p.tag}</span>` : ""}
-        <img src="${p.image}" alt="${p.name}" loading="lazy" />
+        <img src="${p.image}" alt="${p.name}" />
         ${
           p.hover_image
-            ? `<img class="hover" src="${p.hover_image}" alt="" aria-hidden="true" loading="lazy" />`
+            ? `<img class="hover" src="${p.hover_image}" alt="" aria-hidden="true" />`
             : ""
         }
         <button class="product-add" type="button" data-add="${p.id}">Add to bag</button>
@@ -420,21 +420,26 @@ function wireFilmDrag() {
 function observeReveal() {
   const items = $$("[data-reveal]");
   if (!items.length) return;
+  const show = (el) => el.classList.add("is-in");
   if (!("IntersectionObserver" in window)) {
-    items.forEach((el) => el.classList.add("is-in"));
+    items.forEach(show);
     return;
   }
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-in");
+        show(entry.target);
         io.unobserve(entry.target);
       });
     },
-    { threshold: 0.18, rootMargin: "0px 0px -8% 0px" }
+    { threshold: 0.01, rootMargin: "160px 0px 160px 0px" }
   );
   items.forEach((el) => io.observe(el));
+  items.forEach((el) => {
+    const r = el.getBoundingClientRect();
+    if (r.bottom > 0 && r.top < (window.innerHeight || 800) + 80) show(el);
+  });
 }
 
 function wireUi() {

@@ -43,6 +43,16 @@ fn catalog() -> Vec<Product> {
             packshot: true,
         },
         Product {
+            id: "crafts-tee",
+            name: "Girls Just Love Crafts Tee",
+            price: 48,
+            category: "Tops",
+            image: "/static/images/crafts-tee-front.jpg",
+            hover_image: Some("/static/images/crafts-tee-back.jpg"),
+            tag: Some("Just in"),
+            packshot: true,
+        },
+        Product {
             id: "savage-sweats",
             name: "Savage Sweats",
             price: 68,
