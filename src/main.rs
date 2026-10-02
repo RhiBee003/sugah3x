@@ -23,6 +23,16 @@ struct Product {
 fn catalog() -> Vec<Product> {
     vec![
         Product {
+            id: "hero-crop-tee",
+            name: "SugaH3x Crop Tee",
+            price: 48,
+            category: "Tops",
+            image: "/static/images/hero-crop-front.jpg",
+            hover_image: Some("/static/images/hero-crop-back.jpg"),
+            tag: Some("Just in"),
+            packshot: true,
+        },
+        Product {
             id: "dont-be-nice-crop",
             name: "Don't Be Nice Crop Tee",
             price: 48,
